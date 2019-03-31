@@ -29,11 +29,11 @@ class IterativeServer {
                 while (!done) {
                     String message = dataSocket.receiveMessage();
                     System.out.println("message received: " + message);
-                    if ((message.trim()).equals(END_MESSAGE)) {
+                    if ((message.trim().toLowerCase()).equals(END_MESSAGE)) {
                         System.out.println("Session over.");
                         dataSocket.close();
                         done = true;
-                    } else if ((message.trim()).equals(RETURN_MESSAGE)) {
+                    } else if ((message.trim().toLowerCase()).equals(RETURN_MESSAGE)) {
                         Collections.sort(ints);
                         dataSocket.sendMessage(ints.toString());
                     } else {

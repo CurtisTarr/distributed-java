@@ -28,11 +28,11 @@ class ConcurrentServer extends Thread {
             while (!done) {
                 String message = socket.receiveMessage();
                 System.out.println("message received: " + message);
-                if ((message.trim()).equals(END_MESSAGE)) {
+                if ((message.trim().toLowerCase()).equals(END_MESSAGE)) {
                     System.out.println("Session over.");
                     socket.close();
                     done = true;
-                } else if ((message.trim()).equals(RETURN_MESSAGE)) {
+                } else if ((message.trim().toLowerCase()).equals(RETURN_MESSAGE)) {
                     Collections.sort(ints);
                     socket.sendMessage(ints.toString());
                 } else {

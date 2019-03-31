@@ -19,10 +19,10 @@ class Client {
             while (!done) {
                 System.out.println("Enter an integer to be sent to the server, '/' to get the integers ordered, or '.' to quit");
                 message = br.readLine();
-                if ((message.trim()).equals(END_MESSAGE)) {
+                if ((message.trim().toLowerCase()).equals(END_MESSAGE)) {
                     done = true;
                     helper.done();
-                } else if ((message.trim()).equals(RETURN_MESSAGE)) {
+                } else if ((message.trim().toLowerCase()).equals(RETURN_MESSAGE)) {
                     System.out.println(helper.getOrderedInts());
                 } else {
                     helper.sendInt(message);
