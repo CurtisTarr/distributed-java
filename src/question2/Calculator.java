@@ -5,8 +5,7 @@ import java.util.*;
 
 class Calculator implements ICalculator {
 
-    @Override
-    public int calcMean(List<Integer> numbers) throws RemoteException {
+    public int calcMean(List<Integer> numbers) {
         int sum = 0;
         for (int i: numbers) {
             sum += i;
@@ -14,8 +13,7 @@ class Calculator implements ICalculator {
         return sum / numbers.size();
     }
 
-    @Override
-    public int calcMode(List<Integer> numbers) throws RemoteException {
+    public int calcMode(List<Integer> numbers) {
         Map<Integer, Integer> dictionary = new HashMap<>();
         for (int i: numbers) {
             if (dictionary.containsKey(i)) {
@@ -36,13 +34,11 @@ class Calculator implements ICalculator {
         return mode;
     }
 
-    @Override
-    public int calcMedian(List<Integer> numbers) throws RemoteException {
+    public int calcMedian(List<Integer> numbers) {
         return numbers.get(numbers.size()/2);
     }
 
-    @Override
-    public String sortAsc(List<Integer> numbers) throws RemoteException {
+    public String sortAsc(List<Integer> numbers) {
         Collections.sort(numbers);
         return numbers.toString();
     }
