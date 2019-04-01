@@ -7,11 +7,11 @@ import java.util.List;
 
 interface ICalculator extends Remote {
 
-    public float calcMean(List<Integer> numbers) throws RemoteException;
+    int calcMean(List<Integer> numbers) throws RemoteException;
 
-    public float calcMode(List<Integer> numbers) throws RemoteException;
+    int calcMode(List<Integer> numbers) throws RemoteException;
 
-    public float calcMedian(List<Integer> numbers) throws RemoteException;
+    int calcMedian(List<Integer> numbers) throws RemoteException;
 
-    public String sortAsc(List<Integer> numbers) throws RemoteException;
+    String sortAsc(List<Integer> numbers) throws RemoteException;
 }

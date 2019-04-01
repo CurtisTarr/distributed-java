@@ -6,18 +6,20 @@ import java.rmi.registry.LocateRegistry;
 
 public class Server {
 
+    private static final int PORT = 7000;
+
     public static void main(String args[]) {
 
         try {
             Calculator calculator = new Calculator();
-            ICalculator calculatorStub = (ICalculator) UnicastRemoteObject.exportObject(calculator, 7000);
-            Registry registry = LocateRegistry.getRegistry();
-            registry.bind("Calculator", calculatorStub);
-        } catch (Exception e) {
-            System.out.println(e);
+            ICalculator calculatorStub = (ICalculator) UnicastRemoteObject.exportObject(calculator, PORT);
+            Registry registry = LocateRegistry.createRegistry(PORT);
+            registry.bind("calculator", calculatorStub);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
 
-        System.out.println("Server started waiting ...");
+        System.out.println("Server ready.");
     }
 
 }

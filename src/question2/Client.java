@@ -10,6 +10,7 @@ import java.util.List;
 public class Client {
 
     private static final String HOST = "localhost";
+    private static final int PORT = 7000;
     private static final String END_MESSAGE = ".";
     private static final String MEAN = "mean";
     private static final String MODE = "mode";
@@ -23,9 +24,9 @@ public class Client {
         List<Integer> numbers = new ArrayList<>();
 
         try {
-            Registry registry = LocateRegistry.getRegistry(HOST);
-            ICalculator calculatorStub = (ICalculator) registry.lookup("Calculator");
-            String command = "";
+            Registry registry = LocateRegistry.getRegistry(HOST, PORT);
+            ICalculator calculatorStub = (ICalculator) registry.lookup("calculator");
+            String command;
 
             boolean done = false;
             while (!done) {
@@ -36,16 +37,16 @@ public class Client {
                         done = true;
                         break;
                     case MEAN:
-                        System.out.println(calculatorStub.calcMean(numbers));
+                        System.out.println("Mean: " + calculatorStub.calcMean(numbers));
                         break;
                     case MODE:
-                        System.out.println(calculatorStub.calcMode(numbers));
+                        System.out.println("Mode: " + calculatorStub.calcMode(numbers));
                         break;
                     case MEDIAN:
-                        System.out.println(calculatorStub.calcMedian(numbers));
+                        System.out.println("Median: " + calculatorStub.calcMedian(numbers));
                         break;
                     case SORT:
-                        System.out.println(calculatorStub.sortAsc(numbers));
+                        System.out.println("Sorted: " + calculatorStub.sortAsc(numbers));
                         break;
                     default:
                         try {
@@ -57,9 +58,8 @@ public class Client {
                         }
                 }
             }
-        } catch (Exception e) {
-            System.out.println(e);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-        System.exit(0);
     }
 }
