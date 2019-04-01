@@ -13,13 +13,11 @@ class StreamSocket extends Socket {
     private BufferedReader input;
     private PrintWriter output;
 
-    // creates the socket given machine host address and specified port and gets input and output streams
-    StreamSocket(InetAddress acceptorHost, int acceptorPort) throws SocketException, IOException {
+    StreamSocket(InetAddress acceptorHost, int acceptorPort) throws IOException {
         socket = new Socket(acceptorHost, acceptorPort);
         setStreams();
     }
 
-    // accepts a socket as a parameter  and gets input and output streams
     StreamSocket(Socket socket) throws IOException {
         this.socket = socket;
         setStreams();
@@ -32,16 +30,13 @@ class StreamSocket extends Socket {
         output = new PrintWriter(new OutputStreamWriter(outStream));
     }
 
-    // sends a message across the socket
-    public void sendMessage(String message) throws IOException {
+    void sendMessage(String message) {
         output.println(message);
         output.flush();
     }
 
-    // receives a message across the socket
-    public String receiveMessage() throws IOException {
-        String message = input.readLine();
-        return message;
+    String receiveMessage() throws IOException {
+        return input.readLine();
     }
 
 }

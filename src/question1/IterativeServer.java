@@ -12,7 +12,7 @@ import java.util.List;
  */
 class IterativeServer {
 
-    private static final String RETURN_MESSAGE = "/";
+    private static final String SORT_MESSAGE = "sort";
     private static final String END_MESSAGE = ".";
     private static final int PORT = 7000;
 
@@ -25,28 +25,35 @@ class IterativeServer {
                 System.out.println("Waiting for a connection.");
                 StreamSocket dataSocket = new StreamSocket(connectionSocket.accept());
                 System.out.println("connection accepted");
-                boolean done = false;
-                while (!done) {
+                boolean running = true;
+                while (running) {
                     String message = dataSocket.receiveMessage();
                     System.out.println("message received: " + message);
-                    if ((message.trim().toLowerCase()).equals(END_MESSAGE)) {
-                        System.out.println("Session over.");
-                        dataSocket.close();
-                        done = true;
-                    } else if ((message.trim().toLowerCase()).equals(RETURN_MESSAGE)) {
-                        Collections.sort(ints);
-                        dataSocket.sendMessage(ints.toString());
-                    } else {
-                        try {
-                            int result = Integer.parseInt(message);
-                            ints.add(result);
-                        } catch (NumberFormatException ex) {
-                            System.out.println("Not an int");
-                        }
+
+                    switch ((message.trim().toLowerCase())) {
+                        case END_MESSAGE:
+                            System.out.println("Session over.");
+                            dataSocket.close();
+                            running = false;
+                            break;
+                        case SORT_MESSAGE:
+                            Collections.sort(ints);
+                            dataSocket.sendMessage("Numbers sorted: " + ints.toString());
+                            break;
+                        default:
+                            try {
+                                int result = Integer.parseInt(message);
+                                ints.add(result);
+                                dataSocket.sendMessage("Current numbers: " + ints.toString());
+                            } catch (NumberFormatException ex) {
+                                dataSocket.sendMessage("Not an int or command");
+                            }
+                            break;
                     }
                 }
             }
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 }

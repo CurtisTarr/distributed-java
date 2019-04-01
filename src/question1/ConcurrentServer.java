@@ -8,14 +8,14 @@ import java.util.List;
 
 class ConcurrentServer extends Thread {
 
-    private static final String RETURN_MESSAGE = "/";
+    private static final String SORT_MESSAGE = "sort";
     private static final String END_MESSAGE = ".";
     private static final int PORT = 7000;
 
     private StreamSocket socket;
 
     private ConcurrentServer(StreamSocket socket) {
-        System.out.println("New client.  ");
+        System.out.println("New client.");
         this.socket = socket;
     }
 
@@ -24,33 +24,40 @@ class ConcurrentServer extends Thread {
         try {
             List<Integer> ints = new ArrayList<>();
             System.out.println("connection accepted");
-            boolean done = false;
-            while (!done) {
+            boolean running = true;
+            while (running) {
                 String message = socket.receiveMessage();
                 System.out.println("message received: " + message);
-                if ((message.trim().toLowerCase()).equals(END_MESSAGE)) {
-                    System.out.println("Session over.");
-                    socket.close();
-                    done = true;
-                } else if ((message.trim().toLowerCase()).equals(RETURN_MESSAGE)) {
-                    Collections.sort(ints);
-                    socket.sendMessage(ints.toString());
-                } else {
-                    try {
-                        int result = Integer.parseInt(message);
-                        ints.add(result);
-                    } catch (NumberFormatException ex) {
-                        System.out.println("Not an int");
-                    }
+
+                switch ((message.trim().toLowerCase())) {
+                    case END_MESSAGE:
+                        System.out.println("Session over.");
+                        socket.close();
+                        running = false;
+                        break;
+                    case SORT_MESSAGE:
+                        Collections.sort(ints);
+                        socket.sendMessage("Numbers sorted: " + ints.toString());
+                        break;
+                    default:
+                        try {
+                            int result = Integer.parseInt(message);
+                            ints.add(result);
+                            socket.sendMessage("Current numbers: " + ints.toString());
+                        } catch (NumberFormatException ex) {
+                            socket.sendMessage("Not an int or command");
+                        }
+                        break;
                 }
             }
-            return;
         } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
     }
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) {
         try (ServerSocket server = new ServerSocket(PORT)) {
+            System.out.println("Conccurent server ready.");
             while (true) {
                 System.out.println("Waiting");
                 StreamSocket dataSocket = new StreamSocket(server.accept());
