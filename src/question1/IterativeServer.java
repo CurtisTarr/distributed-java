@@ -18,30 +18,30 @@ class IterativeServer {
             System.out.println("Iterative server ready");
             while (true) {
                 System.out.println("Waiting for a connection");
-                StreamSocket dataSocket = new StreamSocket(connectionSocket.accept());
+                StreamSocket socket = new StreamSocket(connectionSocket.accept());
                 System.out.println("connection accepted");
                 boolean running = true;
                 while (running) {
-                    String message = dataSocket.receiveMessage();
+                    String message = socket.receiveMessage();
                     System.out.println("message received: " + message);
 
                     switch ((message.trim().toLowerCase())) {
                         case END_MESSAGE:
                             System.out.println("Session over");
-                            dataSocket.close();
+                            socket.close();
                             running = false;
                             break;
                         case SORT_MESSAGE:
                             Collections.sort(ints);
-                            dataSocket.sendMessage("Numbers sorted: " + ints.toString());
+                            socket.sendMessage("Numbers sorted: " + ints.toString());
                             break;
                         default:
                             try {
                                 int result = Integer.parseInt(message);
                                 ints.add(result);
-                                dataSocket.sendMessage("Current numbers: " + ints.toString());
+                                socket.sendMessage("Current numbers: " + ints.toString());
                             } catch (NumberFormatException ex) {
-                                dataSocket.sendMessage("Not an int or command");
+                                socket.sendMessage("Not an int or command");
                             }
                             break;
                     }
