@@ -35,6 +35,7 @@ class Calculator implements ICalculator {
     }
 
     public int calcMedian(List<Integer> numbers) {
+        Collections.sort(numbers);
         return numbers.get(numbers.size()/2);
     }
 
