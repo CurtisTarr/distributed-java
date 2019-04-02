@@ -3,10 +3,6 @@ package question1;
 import java.net.*;
 import java.io.*;
 
-/**
- * A wrapper class of Socket which contains methods for sending and receiving
- * messages
- */
 class StreamSocket extends Socket {
 
     private Socket socket;

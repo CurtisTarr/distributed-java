@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * This module contains the application logic of an echo server which uses a
- * stream socket for interprocess communication. A command-line argument is
- * required to specify the server port.
- */
 class IterativeServer {
 
     private static final String SORT_MESSAGE = "sort";
@@ -20,9 +15,9 @@ class IterativeServer {
         try {
             List<Integer> ints = new ArrayList<>();
             ServerSocket connectionSocket = new ServerSocket(PORT);
-            System.out.println("Iterative server ready.");
+            System.out.println("Iterative server ready");
             while (true) {
-                System.out.println("Waiting for a connection.");
+                System.out.println("Waiting for a connection");
                 StreamSocket dataSocket = new StreamSocket(connectionSocket.accept());
                 System.out.println("connection accepted");
                 boolean running = true;
@@ -32,7 +27,7 @@ class IterativeServer {
 
                     switch ((message.trim().toLowerCase())) {
                         case END_MESSAGE:
-                            System.out.println("Session over.");
+                            System.out.println("Session over");
                             dataSocket.close();
                             running = false;
                             break;

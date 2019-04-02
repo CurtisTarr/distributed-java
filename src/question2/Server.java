@@ -19,7 +19,7 @@ public class Server {
             System.out.println(ex.getMessage());
         }
 
-        System.out.println("Server ready.");
+        System.out.println("RMI server ready");
     }
 
 }

@@ -13,25 +13,26 @@ class ConcurrentServer extends Thread {
     private static final int PORT = 7000;
 
     private StreamSocket socket;
+    private String name;
 
-    private ConcurrentServer(StreamSocket socket) {
-        System.out.println("New client.");
+    private ConcurrentServer(StreamSocket socket, String name) {
         this.socket = socket;
+        this.name = name;
     }
 
     @Override
     public void run() {
         try {
+            System.out.println("New client connected: " + this.name);
             List<Integer> ints = new ArrayList<>();
-            System.out.println("connection accepted");
             boolean running = true;
             while (running) {
                 String message = socket.receiveMessage();
-                System.out.println("message received: " + message);
+                System.out.println(this.name + " message received: " + message);
 
                 switch ((message.trim().toLowerCase())) {
                     case END_MESSAGE:
-                        System.out.println("Session over.");
+                        System.out.println(this.name + " Session over");
                         socket.close();
                         running = false;
                         break;
@@ -56,14 +57,16 @@ class ConcurrentServer extends Thread {
     }
 
     public static void main(String args[]) {
+        int clientCount = 0;
         try (ServerSocket server = new ServerSocket(PORT)) {
-            System.out.println("Conccurent server ready.");
+            System.out.println("Concurrent server ready");
             while (true) {
-                System.out.println("Waiting");
+                System.out.println("Waiting for connection");
                 StreamSocket dataSocket = new StreamSocket(server.accept());
-                System.out.println("Accepted from " + dataSocket.getInetAddress());
-                ConcurrentServer clientHandler = new ConcurrentServer(dataSocket);
+                System.out.println("Accepted connection from " + dataSocket.getInetAddress());
+                ConcurrentServer clientHandler = new ConcurrentServer(dataSocket, "[C" + Integer.toString(clientCount) + "]");
                 clientHandler.start();
+                clientCount += 1;
             }
         } catch (IOException ex) {
             System.err.println("Unable to connect on specified port");
