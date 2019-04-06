@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * ConcurrentServer that will hold and sort ints for multiple clients
+ */
 class ConcurrentServer extends Thread {
 
     private static final String SORT_MESSAGE = "sort";
@@ -15,6 +18,12 @@ class ConcurrentServer extends Thread {
     private StreamSocket socket;
     private String name;
 
+    /**
+     * Constructor for an instance of the server
+     *
+     * @param socket the socket for the client
+     * @param name the name of the server
+     */
     private ConcurrentServer(StreamSocket socket, String name) {
         this.socket = socket;
         this.name = name;
@@ -27,9 +36,11 @@ class ConcurrentServer extends Thread {
             List<Integer> ints = new ArrayList<>();
             boolean running = true;
             while (running) {
+                // wait for message
                 String message = socket.receiveMessage();
                 System.out.println(this.name + " message received: " + message);
 
+                // determine what to do with the message
                 switch ((message.trim().toLowerCase())) {
                     case END_MESSAGE:
                         System.out.println(this.name + " Session over");
@@ -58,13 +69,16 @@ class ConcurrentServer extends Thread {
 
     public static void main(String args[]) {
         int clientCount = 0;
+        // start server
         try (ServerSocket server = new ServerSocket(PORT)) {
             System.out.println("Concurrent server ready");
             while (true) {
+                // wait for a client to connect, then starting a new thread to handle it
                 System.out.println("Waiting for connection");
-                StreamSocket dataSocket = new StreamSocket(server.accept());
-                System.out.println("Accepted connection from " + dataSocket.getInetAddress());
-                ConcurrentServer clientHandler = new ConcurrentServer(dataSocket, "[C" + Integer.toString(clientCount) + "]");
+                StreamSocket socket = new StreamSocket(server.accept());
+                socket.sendMessage("Accepted connection");
+                System.out.println("Accepted connection");
+                ConcurrentServer clientHandler = new ConcurrentServer(socket, "[C" + clientCount + "]");
                 clientHandler.start();
                 clientCount += 1;
             }

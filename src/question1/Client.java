@@ -2,6 +2,9 @@ package question1;
 
 import java.io.*;
 
+/**
+ * Client that connects to a server and sends and receives messages
+ */
 class Client {
 
     private static final String HOST = "localhost";
@@ -9,19 +12,20 @@ class Client {
     private static final String END_MESSAGE = ".";
 
     public static void main(String[] args) {
-        InputStreamReader is = new InputStreamReader(System.in);
-        BufferedReader br = new BufferedReader(is);
+        InputStreamReader inputStreamReader = new InputStreamReader(System.in);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
         try {
+            // Create new ClientHelper to manage the connection to the server
             ClientHelper helper = new ClientHelper(HOST, PORT);
             String message;
-            boolean done = false;
-            while (!done) {
+            boolean running = true;
+            while (running) {
                 System.out.println("Enter an integer to be sent to the server, 'sort' to get the integers sorted, or '.' to quit");
-                message = br.readLine();
+                message = bufferedReader.readLine();
 
                 if ((message.trim().toLowerCase().equals(END_MESSAGE))) {
-                    done = true;
+                    running = false;
                     helper.done();
                 } else {
                     System.out.println(helper.sendMessage(message));

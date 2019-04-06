@@ -36,6 +36,8 @@ public class Client {
             while (!done) {
                 System.out.println("Enter an integer to add to the list, 'mean', 'mode', 'median', 'sort' or '.' to end the session");
                 command = bufferedReader.readLine();
+
+                // determine what command to perform
                 switch (command.trim().toLowerCase()) {
                     case END_MESSAGE:
                         done = true;

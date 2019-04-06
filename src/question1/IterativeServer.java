@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * IterativeServer that will hold and sort ints for one client at a time
+ */
 class IterativeServer {
 
     private static final String SORT_MESSAGE = "sort";
@@ -13,22 +16,28 @@ class IterativeServer {
 
     public static void main(String[] args) {
         try {
+            // start server
             List<Integer> ints = new ArrayList<>();
             ServerSocket connectionSocket = new ServerSocket(PORT);
             System.out.println("Iterative server ready");
             while (true) {
+                // wait for a client to connect
                 System.out.println("Waiting for a connection");
                 StreamSocket socket = new StreamSocket(connectionSocket.accept());
-                System.out.println("connection accepted");
+                socket.sendMessage("Connection accepted");
+                System.out.println("Connection accepted");
                 boolean running = true;
                 while (running) {
+                    // wait for message
                     String message = socket.receiveMessage();
-                    System.out.println("message received: " + message);
+                    System.out.println("Message received: " + message);
 
+                    // determine what to do with the message
                     switch ((message.trim().toLowerCase())) {
                         case END_MESSAGE:
                             System.out.println("Session over");
                             socket.close();
+                            ints.clear();
                             running = false;
                             break;
                         case SORT_MESSAGE:
