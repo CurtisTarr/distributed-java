@@ -7,6 +7,9 @@ import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Client that connects to a server hosted Calculator
+ */
 public class Client {
 
     private static final String HOST = "localhost";
@@ -19,11 +22,12 @@ public class Client {
 
     public static void main(String[] args) {
 
-        InputStreamReader is = new InputStreamReader(System.in);
-        BufferedReader br = new BufferedReader(is);
+        InputStreamReader inputStream = new InputStreamReader(System.in);
+        BufferedReader bufferedReader = new BufferedReader(inputStream);
         List<Integer> numbers = new ArrayList<>();
 
         try {
+            // try to get a reference to the registry and stub the Calculator that should be there
             Registry registry = LocateRegistry.getRegistry(HOST, PORT);
             ICalculator calculatorStub = (ICalculator) registry.lookup("calculator");
             String command;
@@ -31,7 +35,7 @@ public class Client {
             boolean done = false;
             while (!done) {
                 System.out.println("Enter an integer to add to the list, 'mean', 'mode', 'median', 'sort' or '.' to end the session");
-                command = br.readLine();
+                command = bufferedReader.readLine();
                 switch (command.trim().toLowerCase()) {
                     case END_MESSAGE:
                         done = true;
@@ -40,13 +44,13 @@ public class Client {
                         System.out.println("Mean: " + calculatorStub.calcMean(numbers));
                         break;
                     case MODE:
-                        System.out.println("Mode: " + calculatorStub.calcMode(numbers));
+                        System.out.println("Mode(s): " + calculatorStub.calcMode(numbers).toString());
                         break;
                     case MEDIAN:
                         System.out.println("Median: " + calculatorStub.calcMedian(numbers));
                         break;
                     case SORT:
-                        System.out.println("Sorted: " + calculatorStub.sortAsc(numbers));
+                        System.out.println("Sorted: " + calculatorStub.sortAsc(numbers).toString());
                         break;
                     default:
                         try {
