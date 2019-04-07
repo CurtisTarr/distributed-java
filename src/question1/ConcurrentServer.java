@@ -22,7 +22,7 @@ class ConcurrentServer extends Thread {
      * Constructor for an instance of the server
      *
      * @param socket the socket for the client
-     * @param name the name of the server
+     * @param name the name of the server instance
      */
     private ConcurrentServer(StreamSocket socket, String name) {
         this.socket = socket;

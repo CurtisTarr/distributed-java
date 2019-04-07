@@ -40,7 +40,7 @@ class ClientHelper {
     }
 
     /**
-     * Notifies the server that the client is ending its sessions and disconnects
+     * Notifies the server that the client is ending its session and disconnects
      *
      * @throws IOException
      */

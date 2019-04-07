@@ -32,15 +32,15 @@ public class Client {
             ICalculator calculatorStub = (ICalculator) registry.lookup("calculator");
             String command;
 
-            boolean done = false;
-            while (!done) {
+            boolean running = true;
+            while (running) {
                 System.out.println("Enter an integer to add to the list, 'mean', 'mode', 'median', 'sort' or '.' to end the session");
                 command = bufferedReader.readLine();
 
                 // determine what command to perform
                 switch (command.trim().toLowerCase()) {
                     case END_MESSAGE:
-                        done = true;
+                        running = false;
                         break;
                     case MEAN:
                         System.out.println("Mean: " + calculatorStub.calcMean(numbers));
