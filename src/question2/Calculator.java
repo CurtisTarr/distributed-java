@@ -14,6 +14,10 @@ class Calculator implements ICalculator {
      * @return the mean of numbers
      */
     public int calcMean(List<Integer> numbers) {
+        if (numbers.size() == 0) {
+            return 0;
+        }
+
         int sum = 0;
         for (int i : numbers) {
             sum += i;
@@ -28,6 +32,10 @@ class Calculator implements ICalculator {
      * @return the mode(s) of numbers
      */
     public List calcMode(List<Integer> numbers) {
+        if (numbers.size() == 0) {
+            return numbers;
+        }
+
         // turn the list into a map of each unique number and how many times it occurs
         Map<Integer, Integer> dictionary = new HashMap<>();
         for (int i : numbers) {
@@ -60,6 +68,10 @@ class Calculator implements ICalculator {
      * @return the median of numbers
      */
     public int calcMedian(List<Integer> numbers) {
+        if (numbers.size() == 0) {
+            return 0;
+        }
+
         Collections.sort(numbers);
         return numbers.get(numbers.size() / 2);
     }
